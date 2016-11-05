@@ -14,17 +14,22 @@
 #include <wx/sizer.h>
 #include <wx/filedlg.h>
 #include "ZomDrawPanel.h"
+#include "SimulationWorld.h"
 
 enum
 {
 	ID_SImSTART=1000,
 	ID_TURN_TIMER,
+    ID_LOAD_ZOMBIE,
+    ID_LOAD_SURVIVOR
 };
 
 wxBEGIN_EVENT_TABLE(ZomFrame, wxFrame)
 	EVT_MENU(wxID_EXIT, ZomFrame::OnExit)
 	EVT_MENU(wxID_NEW, ZomFrame::OnNew)
 	EVT_MENU(ID_SImSTART, ZomFrame::OnSimStart)
+    EVT_MENU(ID_LOAD_ZOMBIE, ZomFrame::OnLoadZombie)
+    EVT_MENU(ID_LOAD_SURVIVOR, ZomFrame::OnLoadSurvivor)
 	EVT_TIMER(ID_TURN_TIMER, ZomFrame::OnTurnTimer)
 wxEND_EVENT_TABLE()
 
@@ -40,7 +45,9 @@ ZomFrame::ZomFrame(const wxString& title, const wxPoint& pos, const wxSize& size
 	// Simulation menu
 	mSimMenu = new wxMenu;
 	mSimMenu->Append(ID_SImSTART, "Start/stop\tSpace", "Start or stop the simulation");
-	
+    mSimMenu->Append(ID_LOAD_ZOMBIE, "Load Zombie", "Load zombies file");
+    mSimMenu->Append(ID_LOAD_SURVIVOR, "Load Survivor", "Load survivors file");
+    
 	wxMenuBar* menuBar = new wxMenuBar;
 	menuBar->Append(menuFile, "&File");
 	menuBar->Append(mSimMenu, "&Simulation");
@@ -59,8 +66,7 @@ ZomFrame::ZomFrame(const wxString& title, const wxPoint& pos, const wxSize& size
 	mTurnTimer = new wxTimer(this, ID_TURN_TIMER);
 
 	// TEMP CODE: Initialize zombie test machine
-	zombieMachine.LoadMachine(std::string(""));
-	zombieMachine.BindState(zombieTestState);
+
 	// END TEMP CODE
 }
 
@@ -99,4 +105,27 @@ void ZomFrame::OnTurnTimer(wxTimerEvent& event)
 	// TEMP CODE: Take turn for zombie machine
 	zombieMachine.TakeTurn(zombieTestState);
 	// END TEMP CODE
+}
+
+void ZomFrame::OnLoadZombie(wxCommandEvent &event)
+{
+    wxFileDialog
+    openFileDialog(this, _(""), "./zom", "",
+                   "ZOM Files (*.zom)|*.zom", wxFD_OPEN|wxFD_FILE_MUST_EXIST);
+    if (openFileDialog.ShowModal() == wxID_CANCEL)
+    {
+        return;     // the user changed idea...
+    }
+    
+    openFileDialog.GetPath().ToStdString();
+    
+    zombieMachine.LoadMachine(openFileDialog.GetPath().ToStdString());
+    zombieTestState.mLocation.x = 5;
+    zombieTestState.mLocation.y = 5;
+    zombieMachine.BindState(zombieTestState);
+}
+
+void ZomFrame::OnLoadSurvivor(wxCommandEvent &event)
+{
+    
 }

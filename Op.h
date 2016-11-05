@@ -47,3 +47,102 @@ struct OpGoto : Op
 
 	virtual void Execute(MachineState& state) override;
 };
+
+struct OpTestHuman : Op
+{
+    OpTestHuman(int parameter)
+        : Op("OpTestHuman", parameter)
+    { }
+    
+    virtual void Execute(MachineState& state) override;
+};
+
+struct OpTestZombie : Op
+{
+    OpTestZombie(int parameter)
+    : Op("OpTestZombie", parameter)
+    { }
+    
+    virtual void Execute(MachineState& state) override;
+};
+
+struct OpTestRandom : Op
+{
+    OpTestRandom()
+    : Op("OpTestRandom", 0)
+    { }
+    
+    virtual void Execute(MachineState& state) override;
+};
+
+struct OpTestPassable : Op
+{
+    OpTestPassable()
+    : Op("OpTestPassable", 0)
+    { }
+    
+    virtual void Execute(MachineState& state) override;
+};
+
+struct OpJe : Op
+{
+    OpJe(int parameter)
+    : Op("OpJe", parameter)
+    { }
+    
+    virtual void Execute(MachineState& state) override;
+};
+
+struct OpJne : Op
+{
+    OpJne(int parameter)
+    : Op("OpJne", parameter)
+    { }
+    
+    virtual void Execute(MachineState& state) override;
+};
+
+struct OpTestWall : Op
+{
+    OpTestWall()
+        : Op("OpTestWall", 0)
+    { }
+    
+    virtual void Execute(MachineState& state) override;
+};
+
+struct OpAttack : Op
+{
+    OpAttack()
+    : Op("OpAttack", 0)
+    { }
+    
+    virtual void Execute(MachineState& state) override;
+};
+
+struct OpRangedAttack : Op
+{
+    OpRangedAttack()
+    : Op("OpRangedAttack", 0)
+    { }
+    
+    virtual void Execute(MachineState& state) override;
+};
+
+struct OpForward : Op
+{
+    OpForward()
+    : Op("OpForward", 0)
+    { }
+    
+    virtual void Execute(MachineState& state) override;
+};
+
+struct OpEndTurn : Op
+{
+    OpEndTurn()
+    : Op("OpEndTurn", 0)
+    { }
+    
+    virtual void Execute(MachineState& state) override;
+};

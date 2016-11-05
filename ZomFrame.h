@@ -23,7 +23,9 @@ private:
 	void OnNew(wxCommandEvent& event);
 	void OnSimStart(wxCommandEvent& event);
 	void OnTurnTimer(wxTimerEvent& event);
-	
+    void OnLoadZombie(wxCommandEvent& event);
+    void OnLoadSurvivor(wxCommandEvent& event);
+    
 	wxDECLARE_EVENT_TABLE();
 private:
 	// Panel for drawing
