@@ -12,6 +12,7 @@
 		92296D811B86CE3D00FED746 /* ZomApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92296D7A1B86CE3D00FED746 /* ZomApp.cpp */; };
 		92296D821B86CE3D00FED746 /* ZomDrawPanel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92296D7C1B86CE3D00FED746 /* ZomDrawPanel.cpp */; };
 		92296D831B86CE3D00FED746 /* ZomFrame.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92296D7E1B86CE3D00FED746 /* ZomFrame.cpp */; };
+		B422F6BF1DCBFE43004FD4E4 /* SimulationWorld.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B422F6BD1DCBFE43004FD4E4 /* SimulationWorld.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -48,6 +49,8 @@
 		92B0108B1A5265F10032333B /* stationary.zom */ = {isa = PBXFileReference; lastKnownFileType = text; name = stationary.zom; path = zom/stationary.zom; sourceTree = "<group>"; };
 		92B0108C1A5265F10032333B /* the_governor.zom */ = {isa = PBXFileReference; lastKnownFileType = text; name = the_governor.zom; path = zom/the_governor.zom; sourceTree = "<group>"; };
 		92FE70791A4F35CC004A0B98 /* zombiewx-mac */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "zombiewx-mac"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B422F6BD1DCBFE43004FD4E4 /* SimulationWorld.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SimulationWorld.cpp; sourceTree = SOURCE_ROOT; };
+		B422F6BE1DCBFE43004FD4E4 /* SimulationWorld.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimulationWorld.h; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -102,6 +105,8 @@
 				92296D761B86CE3D00FED746 /* Op.cpp */,
 				92296D771B86CE3D00FED746 /* Op.h */,
 				92296D781B86CE3D00FED746 /* Singleton.h */,
+				B422F6BD1DCBFE43004FD4E4 /* SimulationWorld.cpp */,
+				B422F6BE1DCBFE43004FD4E4 /* SimulationWorld.h */,
 				92296D791B86CE3D00FED746 /* Traits.h */,
 				92296D7A1B86CE3D00FED746 /* ZomApp.cpp */,
 				92296D7B1B86CE3D00FED746 /* ZomApp.h */,
@@ -171,6 +176,7 @@
 			files = (
 				92296D811B86CE3D00FED746 /* ZomApp.cpp in Sources */,
 				92296D801B86CE3D00FED746 /* Op.cpp in Sources */,
+				B422F6BF1DCBFE43004FD4E4 /* SimulationWorld.cpp in Sources */,
 				92296D831B86CE3D00FED746 /* ZomFrame.cpp in Sources */,
 				92296D821B86CE3D00FED746 /* ZomDrawPanel.cpp in Sources */,
 			);

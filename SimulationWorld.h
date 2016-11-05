@@ -8,6 +8,7 @@
 
 #include "Singleton.h"
 #include "Machine.h"
+#include <vector>
 #pragma once
 
 class SimulationWorld : public Singleton<SimulationWorld>
@@ -27,7 +28,7 @@ public:
     void SetHumanMachine(Machine<HumanTraits> machine);
     void SetZombieMachine(Machine<ZombieTraits> machine);
     // World grid
-    MachineState mGrid [20][20];
+    std::vector<std::vector<MachineState>> mGrid;
     
 protected:
     SimulationWorld();

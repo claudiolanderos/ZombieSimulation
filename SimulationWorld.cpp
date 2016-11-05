@@ -13,8 +13,9 @@
 SimulationWorld::SimulationWorld()
 {
     for (int i = 0; i < 20; i++) {
+        mGrid.resize(20);
         for (int x = 0; x < 20; x++) {
-            mGrid[x][i] = MachineState();
+            mGrid[x].push_back(MachineState());
         }
     }
     // TEMP CODE
@@ -38,17 +39,37 @@ Being SimulationWorld::GetFacing(Coord coord, int n)
         switch (facing)
         {
             case (MachineState::UP) :
-                being = mGrid[coord.x+n][coord.y].mBeing;
+                if(coord.y-n < 0)
+                {
+                    being = Being::WALL;
+                    break;
+                }
+                being = mGrid[coord.x][coord.y-n].mBeing;
                 break;
             case (MachineState::RIGHT) :
-                being =  mGrid[coord.x][coord.y+n].mBeing;
+                if(coord.x+n >= mGrid.size())
+                {
+                    being = Being::WALL;
+                    break;
+                }
+                being =  mGrid[coord.x+n][coord.y].mBeing;
                 break;
             case (MachineState::DOWN) :
-                being =  mGrid[coord.x-n][coord.y].mBeing;
+                if(coord.y+n >= mGrid.size())
+                {
+                    being = Being::WALL;
+                    break;
+                }
+                being =  mGrid[coord.x][coord.y+n].mBeing;
                 break;
             default:
             case (MachineState::LEFT) :
-                being =  mGrid[coord.x][coord.y-n].mBeing;
+                if(coord.x-n < 0)
+                {
+                    being = Being::WALL;
+                    break;
+                }
+                being =  mGrid[coord.x-n][coord.y].mBeing;
                 break;
         }
         } catch(const std::out_of_range& oor) {

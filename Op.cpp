@@ -77,6 +77,7 @@ void OpRotate::Execute(MachineState& state)
 		break;
 	}
 	std::cout << std::endl;*/
+    SimulationWorld::get().mGrid[state.mLocation.x][state.mLocation.y].mFacing = state.mFacing;
 	state.mProgramCounter++;
 	state.mActionsTaken++;
 }
@@ -120,7 +121,7 @@ void OpTestRandom::Execute(MachineState &state)
     // TODO
     DebugOutput(state);
     srand(static_cast<unsigned>(time(NULL)));
-    state.mTest = rand() % 1;
+    state.mTest = rand() % 2;
     state.mProgramCounter++;
 }
 
@@ -193,17 +194,17 @@ void OpForward::Execute(MachineState &state)
         switch (state.mFacing)
         {
             case (MachineState::UP) :
-                state.mLocation.x++;
+                state.mLocation.y--;
                 break;
             case (MachineState::RIGHT) :
-                state.mLocation.y++;
+                state.mLocation.x++;
                 break;
             case (MachineState::DOWN) :
-                state.mLocation.x--;
+                state.mLocation.y++;
                 break;
             default:
             case (MachineState::LEFT) :
-                state.mLocation.y--;
+                state.mLocation.x--;
                 break;
         }
         Coord newLocation = state.mLocation;
