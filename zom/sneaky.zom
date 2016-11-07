@@ -1,0 +1,16 @@
+test_human,2 ; evade
+je,7        ; Go to ranged attack
+test_human,1	;
+je,13        ; Go to melee attack
+test_passable
+je,15
+test_random
+je,11
+rotate,0
+goto,1
+rotate,1
+goto,1
+attack
+goto,1
+forward
+goto,1

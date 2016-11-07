@@ -1,0 +1,22 @@
+test_human,2
+je,13
+test_human,1
+je,15
+test_zombie,2
+je,17
+test_zombie,1
+je,19
+test_passable
+je,21
+rotate,0
+goto,1
+ranged_attack ; kill human
+goto,1
+attack ; kill human
+goto,1
+rotate,0
+goto,1
+rotate,1
+goto,1
+forward
+goto,1
