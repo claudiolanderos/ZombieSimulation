@@ -11,6 +11,7 @@
 #include <stdexcept>
 #include <stdlib.h>
 #include <time.h>
+#include "Exceptions.h"
 
 SimulationWorld::SimulationWorld()
 {
@@ -27,7 +28,7 @@ Being SimulationWorld::GetFacing(Coord coord, int n)
     MachineState character = mGrid[coord.x][coord.y];
     if(character.mBeing == Being::EMPTY || character.mBeing == Being::WALL)
     {
-        // TODO throw exception
+        throw new SimulationException();
     }
     else {
         MachineState::Facing facing = character.mFacing;
@@ -176,13 +177,32 @@ void SimulationWorld::SetHumanMachine(Machine<HumanTraits> machine)
 
 void SimulationWorld::TakeTurn()
 {
-    for(auto &i : mZombies)
+    mMonth++;
+    for(std::vector<MachineState>::iterator it = mZombies.begin(); it != mZombies.end(); it++)
     {
-        mZombieMachine.TakeTurn(i);
+        try {
+            mZombieMachine.TakeTurn(*it);
+        }
+        catch (InvalidOp& e)
+        {
+            std::cout << e.what() << std::endl;
+            mGrid[it->mLocation.x][it->mLocation.
+                                   y].mBeing = EMPTY;
+            mZombies.erase(it);
+        }
     }
-    for(auto &i : mHumans)
+    for(std::vector<MachineState>::iterator it = mHumans.begin(); it != mHumans.end(); it++)
     {
-        mHumanMachine.TakeTurn(i);
+        try {
+            mHumanMachine.TakeTurn(*it);
+        }
+        catch (InvalidOp& e)
+        {
+            std::cout << e.what() << std::endl;
+            mGrid[it->mLocation.x][it->mLocation.
+                                   y].mBeing = EMPTY;
+            mHumans.erase(it);
+        }
     }
 }
 
@@ -197,7 +217,7 @@ void SimulationWorld::RemoveHuman(Coord location)
             return;
         }
     }
-    // Throw exception
+    throw new SimulationException();
 }
 
 void SimulationWorld::RemoveZombie(Coord location)
@@ -211,7 +231,7 @@ void SimulationWorld::RemoveZombie(Coord location)
             return;
         }
     }
-    // Throw exception
+    throw new SimulationException();
 }
 
 void SimulationWorld::ConvertHuman(Coord location)
@@ -245,4 +265,11 @@ void SimulationWorld::Reset()
         mGrid[it->mLocation.x][it->mLocation.y].mBeing = EMPTY;
     }
     mZombies.clear();
+}
+
+void SimulationWorld::New()
+{
+    Reset();
+    mHumanMachine = Machine<HumanTraits>();
+    mZombieMachine = Machine<ZombieTraits>();
 }

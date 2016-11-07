@@ -40,9 +40,12 @@ public:
     void TakeTurn();
     
     void Reset();
+    void New();
     
     long GetZombiesAlive() { return mZombies.size(); }
     long GetHumansAlive() { return mHumans.size(); }
+    
+    int GetMonth() { return mMonth; }
     
     // World grid
     std::vector<std::vector<MachineState>> mGrid;
@@ -54,5 +57,7 @@ protected:
     std::vector<MachineState> mHumans;
 
     Machine<ZombieTraits> mZombieMachine;
-    Machine<HumanTraits> mHumanMachine;;
+    Machine<HumanTraits> mHumanMachine;
+    
+    int mMonth = 0;
 };

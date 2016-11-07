@@ -40,4 +40,7 @@ private:
 	wxTimer* mTurnTimer;
 	
 	bool mIsActive;
+    
+    bool mZombieLoaded = false;
+    bool mHumanLoaded = false;
 };

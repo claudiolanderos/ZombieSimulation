@@ -13,6 +13,7 @@
 #include "SimulationWorld.h"
 #include <wx/listimpl.cpp>
 #include <memory>
+#include <sstream>
 
 BEGIN_EVENT_TABLE(ZomDrawPanel, wxPanel)
 	EVT_PAINT(ZomDrawPanel::PaintEvent)
@@ -51,7 +52,34 @@ void ZomDrawPanel::DrawGrid(wxDC& dc)
 	dc.SetPen(*wxBLACK_PEN);
 	dc.DrawRectangle(10, 10, 600, 600);
     
+    dc.SetTextForeground(*wxRED);
+    dc.DrawText("Zombies", 620, 10);
+    std::stringstream ss;
+    ss.str("");
+    ss << "Program: ";
+    ss << mZombiesProgram;
+    dc.DrawText(ss.str(), 620, 20);
+    ss.str("");
+    ss << SimulationWorld::get().GetZombiesAlive();
+    dc.DrawText(ss.str(), 620, 30);
+    
+    dc.SetTextForeground(*wxGREEN);
+    dc.DrawText("Zombies", 620, 50);
+    ss.str("");
+    ss << "Program: ";
+    ss << mHumansProgram;
+    dc.DrawText(ss.str(), 620, 60);
+    ss.str("");
+    ss << SimulationWorld::get().GetHumansAlive();
+    dc.DrawText(ss.str(), 620, 70);
+    
+    dc.SetTextForeground(*wxBLACK);
+    ss.str("");
+    ss << "Month: ";
+    ss << SimulationWorld::get().GetMonth();
+    dc.DrawText(ss.str(), 620, 100);
     // Draw grid outline
+    dc.SetPen(*wxBLACK_PEN);
     int g = 30;
     for(int y = 0; y < 20; y++)
     {

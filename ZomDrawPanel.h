@@ -28,5 +28,7 @@ protected:
 	
 public:
 	// Variables here
+    std::string mZombiesProgram;
+    std::string mHumansProgram;
 };
 

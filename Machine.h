@@ -138,13 +138,13 @@ void Machine<MachineTraits>::LoadMachine(const std::string& filename)
                 {
                     if(line[++i] != ',')
                     {
-                        //TODO throw parsing exception
+                        throw new InvalidFile();
                     }
                     else {
                         i++;
                         if(line[i] != '0' && line[i] != '1')
                         {
-                            // TODO throw parsing exception
+                            throw new InvalidFile();
                         }
                         else {
                             mOps.push_back(std::make_shared<OpRotate>(line[i] - '0'));
@@ -156,13 +156,13 @@ void Machine<MachineTraits>::LoadMachine(const std::string& filename)
                 {
                     if(line[++i] != ',')
                     {
-                        //TODO throw parsing exception
+                        throw new InvalidFile();
                     }
                     else {
                         i++;
                         if(line[i] != '1' && line[i] != '2')
                         {
-                            // TODO throw parsing exception
+                            throw new InvalidFile();
                         }
                         else {
                             mOps.push_back(std::make_shared<OpTestHuman>(line[i] - '0'));
@@ -174,7 +174,7 @@ void Machine<MachineTraits>::LoadMachine(const std::string& filename)
                 {
                     if(line[++i] != ',')
                     {
-                        //TODO throw parsing exception
+                        throw new InvalidFile();
                     }
                     else {
                         i++;
@@ -183,7 +183,7 @@ void Machine<MachineTraits>::LoadMachine(const std::string& filename)
                             mOps.push_back(std::make_shared<OpTestZombie>(line[i] - '0'));
                             break;                        }
                         else {
-                            // Throw exception
+                            throw new InvalidFile();
                         }
                     }
                 }
@@ -191,7 +191,7 @@ void Machine<MachineTraits>::LoadMachine(const std::string& filename)
                 {
                     if(line[++i] != ',')
                     {
-                        //TODO throw parsing exception
+                        throw new InvalidFile();
                     }
                     else {
                         std::string number;
@@ -206,7 +206,7 @@ void Machine<MachineTraits>::LoadMachine(const std::string& filename)
                             mOps.push_back(std::make_shared<OpGoto>(x));
                             break;
                         } catch(std::exception e){
-                            // TODO throw parsing exception
+                            throw new InvalidFile();
                         }
                     }
                 }
@@ -214,7 +214,7 @@ void Machine<MachineTraits>::LoadMachine(const std::string& filename)
                 {
                     if(line[++i] != ',')
                     {
-                        //TODO throw parsing exception
+                        throw new InvalidFile();
                     }
                     else {
                         std::string number;
@@ -229,7 +229,7 @@ void Machine<MachineTraits>::LoadMachine(const std::string& filename)
                             mOps.push_back(std::make_shared<OpJe>(x));
                             break;
                         } catch(std::exception e){
-                            // TODO throw parsing exception
+                            throw new InvalidFile();
                         }
                     }
                 }
@@ -237,7 +237,7 @@ void Machine<MachineTraits>::LoadMachine(const std::string& filename)
                 {
                     if(line[++i] != ',')
                     {
-                        //TODO throw parsing exception
+                        throw new InvalidFile();
                     }
                     else {
                         std::string number;
@@ -252,7 +252,7 @@ void Machine<MachineTraits>::LoadMachine(const std::string& filename)
                             mOps.push_back(std::make_shared<OpJne>(x));
                             break;
                         } catch(std::exception e){
-                            // TODO throw parsing exception
+                            throw new InvalidFile();
                         }
                     }
                 }
@@ -275,11 +275,16 @@ void Machine<MachineTraits>::BindState(MachineState& state)
 template <typename MachineTraits>
 void Machine<MachineTraits>::TakeTurn(MachineState& state)
 {
-	std::cout << "TAKING TURN" << std::endl;
+	std::cout << "TAKING TURN" << " Being: " << state.mBeing << " Location: x"<< state.mLocation.x << " y" << state.mLocation.y << " Program counter: " << state.mProgramCounter << std::endl;
+    
+    if(state.mProgramCounter > state.mProgramLength)
+    {
+        state.mProgramCounter = 1;
+    }
 	state.mActionsTaken = 0;
 	while (state.mActionsTaken < MachineTraits::ACTIONS_PER_TURN)
 	{
-		mOps.at(state.mProgramCounter - 1)->Execute(state);
+        mOps.at(state.mProgramCounter - 1)->Execute(state);
 	}
 }
 

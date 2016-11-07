@@ -60,23 +60,6 @@ void OpRotate::Execute(MachineState& state)
 		break;
 	}
 
-	/*std::cout << "Now facing ";
-	switch (state.mFacing)
-	{
-	case (MachineState::UP):
-		std::cout << "UP";
-		break;
-	case (MachineState::RIGHT):
-		std::cout << "RIGHT";
-		break;
-	case (MachineState::DOWN):
-		std::cout << "DOWN";
-		break;
-	case (MachineState::LEFT):
-		std::cout << "LEFT";
-		break;
-	}
-	std::cout << std::endl;*/
     SimulationWorld::get().mGrid[state.mLocation.x][state.mLocation.y].mFacing = state.mFacing;
 	state.mProgramCounter++;
 	state.mActionsTaken++;
@@ -84,14 +67,13 @@ void OpRotate::Execute(MachineState& state)
 
 void OpGoto::Execute(MachineState& state)
 {
-    // TODO excpetion
 	DebugOutput(state);
     if(mParam > 0 && mParam <= state.mProgramLength)
     {
         state.mProgramCounter = mParam;
     }
     else {
-        // Throw exception
+        throw new InvalidOp();
     }
 }
 
@@ -112,13 +94,16 @@ void OpTestHuman::Execute(MachineState &state)
 void OpTestZombie::Execute(MachineState &state)
 {
     DebugOutput(state);
+    if(state.mProgramCounter > 25)
+    {
+        std::cout << "woop";
+    }
     state.mTest = (SimulationWorld::get().GetFacing(state.mLocation, mParam) == Being::ZOMBIE);
     state.mProgramCounter++;
 }
 
 void OpTestRandom::Execute(MachineState &state)
 {
-    // TODO
     DebugOutput(state);
     srand(static_cast<unsigned>(time(NULL)));
     state.mTest = rand() % 2;
@@ -141,11 +126,15 @@ void OpJe::Execute(MachineState &state)
             state.mProgramCounter = mParam;
         }
         else {
+            if(mParam == state.mProgramLength)
+            {
+                throw new InvalidOp();
+            }
             state.mProgramCounter++;
         }
     }
     else {
-        // Throw exception
+        throw new InvalidOp();
     }
 }
 
@@ -159,11 +148,15 @@ void OpJne::Execute(MachineState &state)
             state.mProgramCounter = mParam;
         }
         else {
+            if(mParam == state.mProgramLength)
+            {
+                throw new InvalidOp();
+            }
             state.mProgramCounter++;
         }
     }
     else {
-        // Throw exception
+        throw new InvalidOp();
     }
 }
 
@@ -221,7 +214,7 @@ void OpRangedAttack::Execute(MachineState &state)
     DebugOutput(state);
     if(state.mBeing != Being::HUMAN)
     {
-        // throw exception
+        throw new InvalidOp();
     }
     Being being = SimulationWorld::get().GetFacing(state.mLocation, mParam);
     if(being == Being::HUMAN || being == Being::ZOMBIE)
