@@ -104,6 +104,7 @@ void ZomFrame::OnTurnTimer(wxTimerEvent& event)
 {
 	// TEMP CODE: Take turn for zombie machine
 	zombieMachine.TakeTurn(zombieTestState);
+    mPanel->PaintNow();
 	// END TEMP CODE
 }
 
