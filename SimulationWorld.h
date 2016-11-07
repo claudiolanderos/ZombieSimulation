@@ -39,6 +39,11 @@ public:
     
     void TakeTurn();
     
+    void Reset();
+    
+    long GetZombiesAlive() { return mZombies.size(); }
+    long GetHumansAlive() { return mHumans.size(); }
+    
     // World grid
     std::vector<std::vector<MachineState>> mGrid;
     

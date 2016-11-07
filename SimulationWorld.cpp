@@ -232,3 +232,17 @@ void SimulationWorld::ConvertHuman(Coord location)
         }
     }
 }
+
+void SimulationWorld::Reset()
+{
+    for(std::vector<MachineState>::iterator it = mHumans.begin(); it != mHumans.end(); it++)
+    {
+        mGrid[it->mLocation.x][it->mLocation.y].mBeing = EMPTY;
+    }
+    mHumans.clear();
+    for(std::vector<MachineState>::iterator it = mZombies.begin(); it != mZombies.end(); it++)
+    {
+        mGrid[it->mLocation.x][it->mLocation.y].mBeing = EMPTY;
+    }
+    mZombies.clear();
+}

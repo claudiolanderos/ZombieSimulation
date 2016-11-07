@@ -22,7 +22,8 @@ enum
 	ID_TURN_TIMER,
     ID_LOAD_ZOMBIE,
     ID_LOAD_SURVIVOR,
-    ID_RANDOMIZE
+    ID_RANDOMIZE,
+    ID_RESET
 };
 
 wxBEGIN_EVENT_TABLE(ZomFrame, wxFrame)
@@ -32,6 +33,7 @@ EVT_MENU(ID_RANDOMIZE, ZomFrame::OnRandomize)
 	EVT_MENU(ID_SImSTART, ZomFrame::OnSimStart)
     EVT_MENU(ID_LOAD_ZOMBIE, ZomFrame::OnLoadZombie)
     EVT_MENU(ID_LOAD_SURVIVOR, ZomFrame::OnLoadSurvivor)
+    EVT_MENU(ID_RESET, ZomFrame::OnReset)
 	EVT_TIMER(ID_TURN_TIMER, ZomFrame::OnTurnTimer)
 wxEND_EVENT_TABLE()
 
@@ -50,6 +52,8 @@ ZomFrame::ZomFrame(const wxString& title, const wxPoint& pos, const wxSize& size
     mSimMenu->Append(ID_LOAD_ZOMBIE, "Load Zombie", "Load zombies file");
     mSimMenu->Append(ID_LOAD_SURVIVOR, "Load Survivor", "Load survivors file");
     mSimMenu->Append(ID_RANDOMIZE, "Randomize Zombies", "Set random zombies in grid");
+    mSimMenu->Append(ID_RESET, "Reset Simulation");
+    
 	wxMenuBar* menuBar = new wxMenuBar;
 	menuBar->Append(menuFile, "&File");
 	menuBar->Append(mSimMenu, "&Simulation");
@@ -146,4 +150,11 @@ void ZomFrame::OnRandomize(wxCommandEvent &event)
 {
     SimulationWorld::get().RandomizeZombies();
     SimulationWorld::get().RandomizeHumans();
+}
+
+void ZomFrame::OnReset(wxCommandEvent &event)
+{
+    mTurnTimer->Stop();
+    SimulationWorld::get().Reset();
+    mPanel->PaintNow();
 }

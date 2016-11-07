@@ -26,6 +26,7 @@ private:
     void OnLoadZombie(wxCommandEvent& event);
     void OnLoadSurvivor(wxCommandEvent& event);
     void OnRandomize(wxCommandEvent& event);
+    void OnReset(wxCommandEvent& event);
     
 	wxDECLARE_EVENT_TABLE();
 private:
