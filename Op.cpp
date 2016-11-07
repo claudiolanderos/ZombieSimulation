@@ -73,7 +73,7 @@ void OpGoto::Execute(MachineState& state)
         state.mProgramCounter = mParam;
     }
     else {
-        throw new InvalidOp();
+        throw InvalidOp();
     }
 }
 
@@ -128,13 +128,13 @@ void OpJe::Execute(MachineState &state)
         else {
             if(mParam == state.mProgramLength)
             {
-                throw new InvalidOp();
+                throw InvalidOp();
             }
             state.mProgramCounter++;
         }
     }
     else {
-        throw new InvalidOp();
+        throw InvalidOp();
     }
 }
 
@@ -150,13 +150,13 @@ void OpJne::Execute(MachineState &state)
         else {
             if(mParam == state.mProgramLength)
             {
-                throw new InvalidOp();
+                throw InvalidOp();
             }
             state.mProgramCounter++;
         }
     }
     else {
-        throw new InvalidOp();
+        throw InvalidOp();
     }
 }
 
@@ -214,7 +214,7 @@ void OpRangedAttack::Execute(MachineState &state)
     DebugOutput(state);
     if(state.mBeing != Being::HUMAN)
     {
-        throw new InvalidOp();
+        throw InvalidOp();
     }
     Being being = SimulationWorld::get().GetFacing(state.mLocation, mParam);
     if(being == Being::HUMAN || being == Being::ZOMBIE)

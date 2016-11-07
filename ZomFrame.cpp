@@ -90,6 +90,8 @@ void ZomFrame::OnExit(wxCommandEvent& event)
 void ZomFrame::OnNew(wxCommandEvent& event)
 {
     mTurnTimer->Stop();
+    mPanel->mHumansProgram = "";
+    mPanel->mZombiesProgram = "";
     SimulationWorld::get().Reset();
     mPanel->PaintNow();
 }
@@ -111,6 +113,7 @@ void ZomFrame::OnSimStart(wxCommandEvent& event)
 
 void ZomFrame::OnTurnTimer(wxTimerEvent& event)
 {
+    mPanel->PaintNow();
     if(SimulationWorld::get().GetHumansAlive() == 0)
     {
         wxMessageBox("Zombies Win!", "Game Over", wxOK | wxICON_EXCLAMATION);
@@ -123,7 +126,6 @@ void ZomFrame::OnTurnTimer(wxTimerEvent& event)
         mTurnTimer->Stop();
         return;
     }
-    mPanel->PaintNow();
     SimulationWorld::get().TakeTurn();
 }
 

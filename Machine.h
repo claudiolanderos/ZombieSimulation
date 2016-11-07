@@ -138,13 +138,13 @@ void Machine<MachineTraits>::LoadMachine(const std::string& filename)
                 {
                     if(line[++i] != ',')
                     {
-                        throw new InvalidFile();
+                        throw InvalidFile();
                     }
                     else {
                         i++;
                         if(line[i] != '0' && line[i] != '1')
                         {
-                            throw new InvalidFile();
+                            throw InvalidFile();
                         }
                         else {
                             mOps.push_back(std::make_shared<OpRotate>(line[i] - '0'));
@@ -156,13 +156,13 @@ void Machine<MachineTraits>::LoadMachine(const std::string& filename)
                 {
                     if(line[++i] != ',')
                     {
-                        throw new InvalidFile();
+                        throw InvalidFile();
                     }
                     else {
                         i++;
                         if(line[i] != '1' && line[i] != '2')
                         {
-                            throw new InvalidFile();
+                            throw InvalidFile();
                         }
                         else {
                             mOps.push_back(std::make_shared<OpTestHuman>(line[i] - '0'));
@@ -174,7 +174,7 @@ void Machine<MachineTraits>::LoadMachine(const std::string& filename)
                 {
                     if(line[++i] != ',')
                     {
-                        throw new InvalidFile();
+                        throw InvalidFile();
                     }
                     else {
                         i++;
@@ -183,7 +183,7 @@ void Machine<MachineTraits>::LoadMachine(const std::string& filename)
                             mOps.push_back(std::make_shared<OpTestZombie>(line[i] - '0'));
                             break;                        }
                         else {
-                            throw new InvalidFile();
+                            throw InvalidFile();
                         }
                     }
                 }
@@ -191,7 +191,7 @@ void Machine<MachineTraits>::LoadMachine(const std::string& filename)
                 {
                     if(line[++i] != ',')
                     {
-                        throw new InvalidFile();
+                        throw InvalidFile();
                     }
                     else {
                         std::string number;
@@ -206,7 +206,7 @@ void Machine<MachineTraits>::LoadMachine(const std::string& filename)
                             mOps.push_back(std::make_shared<OpGoto>(x));
                             break;
                         } catch(std::exception e){
-                            throw new InvalidFile();
+                            throw InvalidFile();
                         }
                     }
                 }
@@ -214,7 +214,7 @@ void Machine<MachineTraits>::LoadMachine(const std::string& filename)
                 {
                     if(line[++i] != ',')
                     {
-                        throw new InvalidFile();
+                        throw InvalidFile();
                     }
                     else {
                         std::string number;
@@ -229,7 +229,7 @@ void Machine<MachineTraits>::LoadMachine(const std::string& filename)
                             mOps.push_back(std::make_shared<OpJe>(x));
                             break;
                         } catch(std::exception e){
-                            throw new InvalidFile();
+                            throw InvalidFile();
                         }
                     }
                 }
@@ -237,7 +237,7 @@ void Machine<MachineTraits>::LoadMachine(const std::string& filename)
                 {
                     if(line[++i] != ',')
                     {
-                        throw new InvalidFile();
+                        throw InvalidFile();
                     }
                     else {
                         std::string number;
@@ -252,7 +252,7 @@ void Machine<MachineTraits>::LoadMachine(const std::string& filename)
                             mOps.push_back(std::make_shared<OpJne>(x));
                             break;
                         } catch(std::exception e){
-                            throw new InvalidFile();
+                            throw InvalidFile();
                         }
                     }
                 }

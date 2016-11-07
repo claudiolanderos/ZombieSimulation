@@ -26,11 +26,8 @@ Being SimulationWorld::GetFacing(Coord coord, int n)
 {
     Being being;
     MachineState character = mGrid[coord.x][coord.y];
-    if(character.mBeing == Being::EMPTY || character.mBeing == Being::WALL)
-    {
-        throw new SimulationException();
-    }
-    else {
+
+    if(character.mBeing == Being::HUMAN || character.mBeing == Being::ZOMBIE) {
         MachineState::Facing facing = character.mFacing;
         
         try {
@@ -183,12 +180,12 @@ void SimulationWorld::TakeTurn()
         try {
             mZombieMachine.TakeTurn(*it);
         }
-        catch (InvalidOp& e)
+        catch (std::exception& e)
         {
             std::cout << e.what() << std::endl;
             mGrid[it->mLocation.x][it->mLocation.
                                    y].mBeing = EMPTY;
-            mZombies.erase(it);
+            it = mZombies.erase(it);
         }
     }
     for(std::vector<MachineState>::iterator it = mHumans.begin(); it != mHumans.end(); it++)
@@ -196,12 +193,12 @@ void SimulationWorld::TakeTurn()
         try {
             mHumanMachine.TakeTurn(*it);
         }
-        catch (InvalidOp& e)
+        catch (std::exception& e)
         {
             std::cout << e.what() << std::endl;
             mGrid[it->mLocation.x][it->mLocation.
                                    y].mBeing = EMPTY;
-            mHumans.erase(it);
+            it = mHumans.erase(it);
         }
     }
 }
@@ -212,12 +209,12 @@ void SimulationWorld::RemoveHuman(Coord location)
     {
         if(it->mLocation.x == location.x && it->mLocation.y == location.y)
         {
-            mHumans.erase(it);
+            it = mHumans.erase(it);
             mGrid[location.x][location.y].mBeing = EMPTY;
             return;
         }
     }
-    throw new SimulationException();
+    throw SimulationException();
 }
 
 void SimulationWorld::RemoveZombie(Coord location)
@@ -226,12 +223,12 @@ void SimulationWorld::RemoveZombie(Coord location)
     {
         if(it->mLocation.x == location.x && it->mLocation.y == location.y)
         {
-            mZombies.erase(it);
+            it = mZombies.erase(it);
             mGrid[location.x][location.y].mBeing = EMPTY;
             return;
         }
     }
-    throw new SimulationException();
+    throw SimulationException();
 }
 
 void SimulationWorld::ConvertHuman(Coord location)
@@ -247,7 +244,7 @@ void SimulationWorld::ConvertHuman(Coord location)
             zombie.mFacing = it->mFacing;
             mZombieMachine.BindState(zombie);
             mZombies.push_back(zombie);
-            mHumans.erase(it);
+            it = mHumans.erase(it);
             return;
         }
     }
@@ -264,6 +261,7 @@ void SimulationWorld::Reset()
     {
         mGrid[it->mLocation.x][it->mLocation.y].mBeing = EMPTY;
     }
+    mMonth = 0;
     mZombies.clear();
 }
 
