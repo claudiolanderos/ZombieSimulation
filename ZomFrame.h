@@ -25,6 +25,7 @@ private:
 	void OnTurnTimer(wxTimerEvent& event);
     void OnLoadZombie(wxCommandEvent& event);
     void OnLoadSurvivor(wxCommandEvent& event);
+    void OnRandomize(wxCommandEvent& event);
     
 	wxDECLARE_EVENT_TABLE();
 private:
@@ -36,11 +37,6 @@ private:
 	
 	// Turn timer
 	wxTimer* mTurnTimer;
-	
-	// TEMP CODE TEST MACHINES
-	MachineState zombieTestState;
-	Machine<ZombieTraits> zombieMachine;
-	// END TEMP CODE
 	
 	bool mIsActive;
 };

@@ -7,6 +7,7 @@
 //
 
 #include "Singleton.h"
+#include "Traits.h"
 #include "Machine.h"
 #include <vector>
 #pragma once
@@ -27,9 +28,26 @@ public:
     
     void SetHumanMachine(Machine<HumanTraits> machine);
     void SetZombieMachine(Machine<ZombieTraits> machine);
+    
+    void RandomizeZombies();
+    void RandomizeHumans();
+    
+    void ConvertHuman(Coord location);
+    
+    void RemoveZombie(Coord location);
+    void RemoveHuman(Coord location);
+    
+    void TakeTurn();
+    
     // World grid
     std::vector<std::vector<MachineState>> mGrid;
     
 protected:
     SimulationWorld();
+    
+    std::vector<MachineState> mZombies;
+    std::vector<MachineState> mHumans;
+
+    Machine<ZombieTraits> mZombieMachine;
+    Machine<HumanTraits> mHumanMachine;;
 };

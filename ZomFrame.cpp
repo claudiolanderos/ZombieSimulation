@@ -21,11 +21,13 @@ enum
 	ID_SImSTART=1000,
 	ID_TURN_TIMER,
     ID_LOAD_ZOMBIE,
-    ID_LOAD_SURVIVOR
+    ID_LOAD_SURVIVOR,
+    ID_RANDOMIZE
 };
 
 wxBEGIN_EVENT_TABLE(ZomFrame, wxFrame)
 	EVT_MENU(wxID_EXIT, ZomFrame::OnExit)
+EVT_MENU(ID_RANDOMIZE, ZomFrame::OnRandomize)
 	EVT_MENU(wxID_NEW, ZomFrame::OnNew)
 	EVT_MENU(ID_SImSTART, ZomFrame::OnSimStart)
     EVT_MENU(ID_LOAD_ZOMBIE, ZomFrame::OnLoadZombie)
@@ -47,7 +49,7 @@ ZomFrame::ZomFrame(const wxString& title, const wxPoint& pos, const wxSize& size
 	mSimMenu->Append(ID_SImSTART, "Start/stop\tSpace", "Start or stop the simulation");
     mSimMenu->Append(ID_LOAD_ZOMBIE, "Load Zombie", "Load zombies file");
     mSimMenu->Append(ID_LOAD_SURVIVOR, "Load Survivor", "Load survivors file");
-    
+    mSimMenu->Append(ID_RANDOMIZE, "Randomize Zombies", "Set random zombies in grid");
 	wxMenuBar* menuBar = new wxMenuBar;
 	menuBar->Append(menuFile, "&File");
 	menuBar->Append(mSimMenu, "&Simulation");
@@ -102,10 +104,8 @@ void ZomFrame::OnSimStart(wxCommandEvent& event)
 
 void ZomFrame::OnTurnTimer(wxTimerEvent& event)
 {
-	// TEMP CODE: Take turn for zombie machine
-	zombieMachine.TakeTurn(zombieTestState);
+    SimulationWorld::get().TakeTurn();
     mPanel->PaintNow();
-	// END TEMP CODE
 }
 
 void ZomFrame::OnLoadZombie(wxCommandEvent &event)
@@ -120,13 +120,30 @@ void ZomFrame::OnLoadZombie(wxCommandEvent &event)
     
     openFileDialog.GetPath().ToStdString();
     
+    Machine<ZombieTraits> zombieMachine;
     zombieMachine.LoadMachine(openFileDialog.GetPath().ToStdString());
-    zombieTestState.mLocation.x = 5;
-    zombieTestState.mLocation.y = 5;
-    zombieMachine.BindState(zombieTestState);
+    SimulationWorld::get().SetZombieMachine(zombieMachine);
 }
 
 void ZomFrame::OnLoadSurvivor(wxCommandEvent &event)
 {
+    wxFileDialog
+    openFileDialog(this, _(""), "./zom", "",
+                   "ZOM Files (*.zom)|*.zom", wxFD_OPEN|wxFD_FILE_MUST_EXIST);
+    if (openFileDialog.ShowModal() == wxID_CANCEL)
+    {
+        return;     // the user changed idea...
+    }
     
+    openFileDialog.GetPath().ToStdString();
+    
+    Machine<HumanTraits> humanMachine;
+    humanMachine.LoadMachine(openFileDialog.GetPath().ToStdString());
+    SimulationWorld::get().SetHumanMachine(humanMachine);
+}
+
+void ZomFrame::OnRandomize(wxCommandEvent &event)
+{
+    SimulationWorld::get().RandomizeZombies();
+    SimulationWorld::get().RandomizeHumans();
 }

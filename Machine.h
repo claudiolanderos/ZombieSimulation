@@ -159,7 +159,8 @@ void Machine<MachineTraits>::LoadMachine(const std::string& filename)
                         //TODO throw parsing exception
                     }
                     else {
-                        if(line[++i] != '1' && line[++i] != '2')
+                        i++;
+                        if(line[i] != '1' && line[i] != '2')
                         {
                             // TODO throw parsing exception
                         }
@@ -176,13 +177,13 @@ void Machine<MachineTraits>::LoadMachine(const std::string& filename)
                         //TODO throw parsing exception
                     }
                     else {
-                        if(line[++i] != '1' && line[++i] != '2')
+                        i++;
+                        if(line[i] == '1' || line[i] == '2')
                         {
-                            // TODO throw parsing exception
-                        }
-                        else {
                             mOps.push_back(std::make_shared<OpTestZombie>(line[i] - '0'));
-                            break;
+                            break;                        }
+                        else {
+                            // Throw exception
                         }
                     }
                 }

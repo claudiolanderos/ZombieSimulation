@@ -86,7 +86,7 @@ void OpGoto::Execute(MachineState& state)
 {
     // TODO excpetion
 	DebugOutput(state);
-    if(mParam > 0 && mParam < state.mProgramLength)
+    if(mParam > 0 && mParam <= state.mProgramLength)
     {
         state.mProgramCounter = mParam;
     }
@@ -128,13 +128,13 @@ void OpTestRandom::Execute(MachineState &state)
 void OpTestPassable::Execute(MachineState &state)
 {
     DebugOutput(state);
-    state.mTest = (SimulationWorld::get().GetFacing(state.mLocation, mParam) == Being::EMPTY);
+    state.mTest = (SimulationWorld::get().GetFacing(state.mLocation) == Being::EMPTY);
     state.mProgramCounter++;
 }
 void OpJe::Execute(MachineState &state)
 {
     DebugOutput(state);
-    if(mParam > 0 && mParam < state.mProgramLength)
+    if(mParam > 0 && mParam <= state.mProgramLength)
     {
         if(state.mTest)
         {
@@ -152,7 +152,7 @@ void OpJe::Execute(MachineState &state)
 void OpJne::Execute(MachineState &state)
 {
     DebugOutput(state);
-    if(mParam > 0 && mParam < state.mProgramLength)
+    if(mParam > 0 && mParam <= state.mProgramLength)
     {
         if(!state.mTest)
         {
@@ -169,24 +169,94 @@ void OpJne::Execute(MachineState &state)
 
 void OpAttack::Execute(MachineState &state)
 {
-    // TODO
+    Being being = SimulationWorld::get().GetFacing(state.mLocation);
+    switch (being)
+    {
+        case Being::WALL:
+        case Being::EMPTY:
+            break;
+        case Being::ZOMBIE:
+        case Being::HUMAN:
+            Coord victimLocation = state.mLocation;
+            switch (state.mFacing)
+            {
+                case (MachineState::UP) :
+                    victimLocation.y -= 1;
+                    break;
+                case (MachineState::RIGHT):
+                    victimLocation.x += 1;
+                    break;
+                case (MachineState::DOWN):
+                    victimLocation.y += 1;
+                    break;
+                default:
+                case (MachineState::LEFT):
+                    victimLocation.x -= 1;
+                    break;
+            }
+            if(state.mBeing == Being::HUMAN)
+            {
+                if(being == Being::HUMAN)
+                {
+                    SimulationWorld::get().RemoveHuman(victimLocation);
+                }
+                else {
+                    SimulationWorld::get().RemoveZombie(victimLocation);
+                }
+            }
+            else {
+                if(being == Being::HUMAN)
+                {
+                    SimulationWorld::get().ConvertHuman(victimLocation);
+                }
+            }
+            break;
+    }
+    state.mProgramCounter++;
+    state.mActionsTaken++;
 }
 
 void OpRangedAttack::Execute(MachineState &state)
 {
-    // TODO
+    DebugOutput(state);
+    if(state.mBeing != Being::HUMAN)
+    {
+        // throw exception
+    }
+    Being being = SimulationWorld::get().GetFacing(state.mLocation, mParam);
+    if(being == Being::HUMAN || being == Being::ZOMBIE)
+    {
+        Coord victimLocation = state.mLocation;
+        switch (state.mFacing)
+        {
+            case (MachineState::UP) :
+                victimLocation.y -= 2;
+                break;
+            case (MachineState::RIGHT) :
+                victimLocation.x += 2;
+                break;
+            case (MachineState::DOWN) :
+                victimLocation.y += 2;
+                break;
+            default:
+            case (MachineState::LEFT) :
+                victimLocation.x -= 2;
+                break;
+        }
+        if(being == Being::HUMAN)
+        {
+            SimulationWorld::get().RemoveHuman(victimLocation);
+        }
+        else{
+            SimulationWorld::get().RemoveZombie(victimLocation);
+        }
+    }
+    state.mProgramCounter++;
+    state.mActionsTaken++;
 }
 
 void OpForward::Execute(MachineState &state)
 {
-    for(int y = 0; y < 20; y++)
-    {
-        for(int x = 0; x < 20; x++)
-        {
-            std::cout<< "|" << SimulationWorld::get().mGrid[x][y].mBeing;
-        }
-        std::cout<< std::endl << "-------------------------------------------" << std::endl;
-    }
     DebugOutput(state);
     if(SimulationWorld::get().GetFacing(state.mLocation) == Being::EMPTY)
     {
@@ -212,15 +282,6 @@ void OpForward::Execute(MachineState &state)
     }
     state.mProgramCounter++;
     state.mActionsTaken++;
-    
-    for(int y = 0; y < 20; y++)
-    {
-        for(int x = 0; x < 20; x++)
-        {
-            std::cout<< "|" << SimulationWorld::get().mGrid[x][y].mBeing;
-        }
-        std::cout<< std::endl << "-------------------------------------------" << std::endl;
-    }
 }
 
 void OpEndTurn::Execute(MachineState &state)

@@ -78,7 +78,7 @@ struct OpTestRandom : Op
 struct OpTestPassable : Op
 {
     OpTestPassable()
-    : Op("OpTestPassable", 0)
+    : Op("OpTestPassable", 1)
     { }
     
     virtual void Execute(MachineState& state) override;
@@ -105,7 +105,7 @@ struct OpJne : Op
 struct OpTestWall : Op
 {
     OpTestWall()
-        : Op("OpTestWall", 0)
+        : Op("OpTestWall", 1)
     { }
     
     virtual void Execute(MachineState& state) override;
@@ -114,7 +114,7 @@ struct OpTestWall : Op
 struct OpAttack : Op
 {
     OpAttack()
-    : Op("OpAttack", 0)
+    : Op("OpAttack", 1)
     { }
     
     virtual void Execute(MachineState& state) override;
@@ -123,7 +123,7 @@ struct OpAttack : Op
 struct OpRangedAttack : Op
 {
     OpRangedAttack()
-    : Op("OpRangedAttack", 0)
+    : Op("OpRangedAttack", 2)
     { }
     
     virtual void Execute(MachineState& state) override;
@@ -132,7 +132,7 @@ struct OpRangedAttack : Op
 struct OpForward : Op
 {
     OpForward()
-    : Op("OpForward", 0)
+    : Op("OpForward", 1)
     { }
     
     virtual void Execute(MachineState& state) override;
